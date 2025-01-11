@@ -1,9 +1,12 @@
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../../Providers/AuthProviders";
+import { IoMdCart } from "react-icons/io";
+import useCart from "../../../hooks/useCart";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
+  const[cart] = useCart();
   const navItems = (
     <>
       <li>
@@ -68,7 +71,10 @@ const Navbar = () => {
         </div>
         <div className="navbar-end">
           <span>{user?.displayName}</span>
-          <a className="btn">Button</a>
+          <button className="btn">
+          <IoMdCart />
+            <div className="badge badge-secondary">{cart.length}</div>
+          </button>
         </div>
       </div>
     </div>
