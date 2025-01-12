@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProviders";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import GoogleLogin from "../Shared/SocialLogin/GoogleLogin";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -117,12 +118,14 @@ const SignUp = () => {
               <button className="btn btn-primary">Sign Up</button>
             </div>
           </form>
+          <GoogleLogin></GoogleLogin>
           <p className="text-center">
             Already have an account?{" "}
             <Link className="text-blue-600" to={"/login"}>
               Login
             </Link>{" "}
           </p>
+
         </div>
       </div>
     </div>
