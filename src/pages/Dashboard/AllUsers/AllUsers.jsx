@@ -6,36 +6,55 @@ import Swal from "sweetalert2";
 
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
-  const {refetch, data: users = [] } = useQuery({
+  const { refetch, data: users = [] } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users");
+      const res = await axiosSecure.get("/users", {
+        headers: {authorization: `Bearer ${localStorage.getItem('access-token')}`}
+      });
       return res.data;
     },
   });
 
-  const handleMakeAdmin = id = {
-    
+
+  const handleMakeAdmin = (id) =>{
+    Swal.fire({
+      title: "Do you want to admin?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Make",
+      denyButtonText: `Don't Make`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        axiosSecure.patch(`/users/admin/${id}`).then((result) => {
+          if (result.data.modifiedCount > 0) {
+            Swal.fire("Saved!", "", "success");
+            refetch();
+          }
+        });
+      }
+    });
   }
 
   const handleDelete = (id) => {
     Swal.fire({
-        title: "Do you want to delete?",
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Delete",
-        denyButtonText: `Don't Delete`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          axiosSecure.delete(`/users/${id}`).then((result) => {
-            if (result.data.deletedCount > 0) {
-              Swal.fire("Saved!", "", "success");
-              refetch();
-            }
-          });
-        }
-      });
+      title: "Do you want to delete?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      denyButtonText: `Don't Delete`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/users/${id}`).then((result) => {
+          if (result.data.deletedCount > 0) {
+            Swal.fire("Saved!", "", "success");
+            refetch();
+          }
+        });
+      }
+    });
   };
   return (
     <div>
@@ -65,12 +84,16 @@ const AllUsers = () => {
                 <td>
                   <div className="font-bold">{user.email}</div>
                 </td>
-                <button
+                {user.role === "admin" ? (
+                  "Admin"
+                ) : (
+                  <button
                     onClick={() => handleMakeAdmin(user._id)}
                     className="btn-sm"
                   >
                     <FaUsers className="text-2xl"></FaUsers>
                   </button>
+                )}
                 <th>
                   <button
                     onClick={() => handleDelete(user._id)}
