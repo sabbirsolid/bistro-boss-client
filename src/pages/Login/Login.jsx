@@ -8,6 +8,7 @@ import {
 } from "react-simple-captcha";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Providers/AuthProviders";
+import GoogleLogin from "../Shared/SocialLogin/GoogleLogin";
 
 const Login = () => {
   const [disabled, setDisabled] = useState(true);
@@ -107,6 +108,7 @@ const Login = () => {
               </button>
             </div>
           </form>
+          <GoogleLogin></GoogleLogin>
           <p className="text-center">
             Don't have an account?{" "}
             <Link className="text-blue-600" to={"/signup"}>

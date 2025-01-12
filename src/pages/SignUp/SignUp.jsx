@@ -2,9 +2,11 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProviders";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
   const { createUser, updateUserProfile } = useContext(AuthContext);
   const {
     register,
@@ -19,9 +21,17 @@ const SignUp = () => {
         console.log(result.user);
         updateUserProfile(data.name, data.photoUrl)
           .then(() => {
-            alert("User Created Successfully");
-            reset();
-            navigate("/");
+            const userInfo = {
+              name: data.name,
+              email: data.email,
+            };
+            axiosPublic.post("/users", userInfo).then((res) => {
+              if (res.data.insertedId) {
+                alert("User Created Successfully");
+                reset();
+                navigate("/");
+              }
+            });
           })
           .catch((error) => {
             alert("Error creating user", error.message);

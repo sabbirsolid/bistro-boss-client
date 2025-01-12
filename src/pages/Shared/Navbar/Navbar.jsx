@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../../Providers/AuthProviders";
 import { IoMdCart } from "react-icons/io";
 import useCart from "../../../hooks/useCart";
@@ -71,10 +71,10 @@ const Navbar = () => {
         </div>
         <div className="navbar-end">
           <span>{user?.displayName}</span>
-          <button className="btn">
+          <Link to={"/dashboard/cart"} className="btn">
           <IoMdCart />
             <div className="badge badge-secondary">{cart.length}</div>
-          </button>
+          </Link>
         </div>
       </div>
     </div>
