@@ -1,7 +1,7 @@
 import React from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import { FaTrash, FaUser, FaUsers } from "react-icons/fa";
+import { FaTrash, FaUsers } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 const AllUsers = () => {
@@ -9,9 +9,7 @@ const AllUsers = () => {
   const { refetch, data: users = [] } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users", {
-        headers: {authorization: `Bearer ${localStorage.getItem('access-token')}`}
-      });
+      const res = await axiosSecure.get("/users");
       return res.data;
     },
   });
