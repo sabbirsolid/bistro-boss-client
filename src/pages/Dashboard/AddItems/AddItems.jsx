@@ -4,11 +4,11 @@ import { FaUtensils } from "react-icons/fa";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import axios from "axios";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 const imgbb_key = import.meta.env.VITE_IMGBB_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${imgbb_key}`;
 
 const AddItems = () => {
-  const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const { register, handleSubmit, reset} = useForm();
   const onSubmit = async (data) => {
@@ -22,6 +22,7 @@ const AddItems = () => {
     if (res.data.success) {
       const menuItem = {
         name: data.name,
+        recipe: data.recipe,
         category: data.category,
         price: parseFloat(data.price),
         image: res.data.data.display_url,
